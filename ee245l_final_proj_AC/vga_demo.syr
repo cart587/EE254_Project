@@ -3,14 +3,14 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 --> Parameter TMPDIR set to xst/projnav.tmp
 
 
-Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.25 secs
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.59 secs
  
 --> Parameter xsthdpdir set to xst
 
 
-Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.27 secs
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.60 secs
  
 --> Reading design: vga_demo.prj
 
@@ -105,9 +105,9 @@ Slice Utilization Ratio Delta      : 5
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Analyzing Verilog file "C:\Xilinx_projects\ee245l_final_proj_AC\hvsync_generator.v" into library work
+Analyzing Verilog file "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\hvsync_generator.v" into library work
 Parsing module <hvsync_generator>.
-Analyzing Verilog file "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" into library work
+Analyzing Verilog file "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" into library work
 Parsing module <vga_demo>.
 
 =========================================================================
@@ -117,57 +117,76 @@ Parsing module <vga_demo>.
 Elaborating module <vga_demo>.
 
 Elaborating module <BUF>.
-WARNING:HDLCompiler:1127 - "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" Line 35: Assignment to button_clk ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 35: Assignment to button_clk ignored, since the identifier is never used
 
 Elaborating module <hvsync_generator>.
-WARNING:HDLCompiler:413 - "C:\Xilinx_projects\ee245l_final_proj_AC\hvsync_generator.v" Line 34: Result of 11-bit expression is truncated to fit in 10-bit target.
-WARNING:HDLCompiler:413 - "C:\Xilinx_projects\ee245l_final_proj_AC\hvsync_generator.v" Line 44: Result of 11-bit expression is truncated to fit in 10-bit target.
-WARNING:HDLCompiler:413 - "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" Line 57: Result of 11-bit expression is truncated to fit in 10-bit target.
-WARNING:HDLCompiler:413 - "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" Line 62: Result of 32-bit expression is truncated to fit in 10-bit target.
-WARNING:HDLCompiler:634 - "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" Line 95: Net <p2_score[3]> does not have a driver.
-WARNING:HDLCompiler:634 - "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" Line 96: Net <p1_score[3]> does not have a driver.
-WARNING:HDLCompiler:634 - "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v" Line 97: Net <state[1]> does not have a driver.
+WARNING:HDLCompiler:413 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\hvsync_generator.v" Line 34: Result of 11-bit expression is truncated to fit in 10-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\hvsync_generator.v" Line 44: Result of 11-bit expression is truncated to fit in 10-bit target.
+WARNING:HDLCompiler:189 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 43: Size mismatch in connection of port <CounterX>. Formal port size is 10-bit while actual signal size is 19-bit.
+WARNING:HDLCompiler:413 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 68: Result of 11-bit expression is truncated to fit in 10-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 73: Result of 32-bit expression is truncated to fit in 10-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 78: Result of 32-bit expression is truncated to fit in 10-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 83: Result of 11-bit expression is truncated to fit in 10-bit target.
+WARNING:HDLCompiler:634 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 116: Net <p2_score[3]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 117: Net <p1_score[3]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v" Line 118: Net <state[1]> does not have a driver.
 
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
 
 Synthesizing Unit <vga_demo>.
-    Related source file is "C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.v".
-WARNING:Xst:647 - Input <btnL> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <btnR> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Related source file is "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\vga_demo.v".
 WARNING:Xst:653 - Signal <p2_score> is used but never assigned. This sourceless signal will be automatically connected to value GND.
 WARNING:Xst:653 - Signal <p1_score> is used but never assigned. This sourceless signal will be automatically connected to value GND.
 WARNING:Xst:653 - Signal <state> is used but never assigned. This sourceless signal will be automatically connected to value GND.
     Found 28-bit register for signal <DIV_CLK>.
-    Found 10-bit register for signal <position>.
+    Found 10-bit register for signal <positionY>.
+    Found 10-bit register for signal <positionX>.
+    Found 19-bit register for signal <bombY>.
+    Found 19-bit register for signal <bombX>.
+    Found 19-bit register for signal <bombRad>.
     Found 1-bit register for signal <vga_r>.
     Found 1-bit register for signal <vga_g>.
-    Found 11-bit subtractor for signal <GND_1_o_GND_1_o_sub_21_OUT> created at line 72.
+    Found 1-bit register for signal <vga_b>.
+    Found 11-bit subtractor for signal <GND_1_o_GND_1_o_sub_37_OUT> created at line 93.
+    Found 11-bit subtractor for signal <GND_1_o_GND_1_o_sub_41_OUT> created at line 93.
+    Found 19-bit subtractor for signal <CounterY[18]_bombY[18]_sub_45_OUT> created at line 95.
+    Found 19-bit subtractor for signal <CounterX[18]_bombX[18]_sub_48_OUT> created at line 95.
     Found 28-bit adder for signal <DIV_CLK[27]_GND_1_o_add_0_OUT> created at line 32.
-    Found 10-bit adder for signal <position[9]_GND_1_o_add_4_OUT> created at line 57.
-    Found 11-bit adder for signal <n0106> created at line 72.
-    Found 10-bit subtractor for signal <GND_1_o_GND_1_o_sub_7_OUT<9:0>> created at line 62.
+    Found 10-bit adder for signal <positionY[9]_GND_1_o_add_4_OUT> created at line 68.
+    Found 10-bit adder for signal <positionX[9]_GND_1_o_add_10_OUT> created at line 83.
+    Found 11-bit adder for signal <n0194[10:0]> created at line 93.
+    Found 11-bit adder for signal <n0196[10:0]> created at line 93.
+    Found 19-bit adder for signal <CounterY[18]_CounterX[18]_add_50_OUT> created at line 95.
+    Found 10-bit subtractor for signal <GND_1_o_GND_1_o_sub_7_OUT<9:0>> created at line 73.
+    Found 10-bit subtractor for signal <GND_1_o_GND_1_o_sub_9_OUT<9:0>> created at line 78.
+    Found 19x19-bit multiplier for signal <n0156> created at line 95.
+    Found 19x19-bit multiplier for signal <n0158> created at line 95.
+    Found 19x19-bit multiplier for signal <n0160> created at line 95.
     Found 16x7-bit Read Only RAM for signal <SSD_CATHODES>
-    Found 10-bit comparator lessequal for signal <n0017> created at line 66
-    Found 10-bit comparator lessequal for signal <n0019> created at line 66
-    Found 10-bit comparator lessequal for signal <n0021> created at line 66
-    Found 10-bit comparator lessequal for signal <n0025> created at line 67
-    Found 10-bit comparator lessequal for signal <n0027> created at line 67
-    Found 10-bit comparator lessequal for signal <n0029> created at line 67
-    Found 32-bit comparator lessequal for signal <n0038> created at line 72
-    Found 11-bit comparator lessequal for signal <n0041> created at line 72
-    WARNING:Xst:2404 -  FFs/Latches <vga_b<0:0>> (without init value) have a constant value of 0 in block <vga_demo>.
+    Found 19-bit comparator lessequal for signal <n0045> created at line 87
+    Found 19-bit comparator lessequal for signal <n0047> created at line 87
+    Found 19-bit comparator lessequal for signal <n0049> created at line 87
+    Found 19-bit comparator lessequal for signal <n0053> created at line 88
+    Found 19-bit comparator lessequal for signal <n0055> created at line 88
+    Found 19-bit comparator lessequal for signal <n0057> created at line 88
+    Found 32-bit comparator lessequal for signal <n0066> created at line 93
+    Found 19-bit comparator lessequal for signal <n0069> created at line 93
+    Found 32-bit comparator lessequal for signal <n0073> created at line 93
+    Found 19-bit comparator lessequal for signal <n0077> created at line 93
+    Found 19-bit comparator greater for signal <B> created at line 95
     Summary:
 	inferred   1 RAM(s).
-	inferred   4 Adder/Subtractor(s).
-	inferred  40 D-type flip-flop(s).
-	inferred   8 Comparator(s).
+	inferred   3 Multiplier(s).
+	inferred  10 Adder/Subtractor(s).
+	inferred 108 D-type flip-flop(s).
+	inferred  11 Comparator(s).
 	inferred   4 Multiplexer(s).
 Unit <vga_demo> synthesized.
 
 Synthesizing Unit <hvsync_generator>.
-    Related source file is "C:\Xilinx_projects\ee245l_final_proj_AC\hvsync_generator.v".
+    Related source file is "C:\Users\Chris\Documents\EE254\Final Project\EE254_Project\ee245l_final_proj_AC\hvsync_generator.v".
     Found 10-bit register for signal <CounterY>.
     Found 1-bit register for signal <vga_HS>.
     Found 1-bit register for signal <vga_VS>.
@@ -191,21 +210,26 @@ HDL Synthesis Report
 Macro Statistics
 # RAMs                                                 : 1
  16x7-bit single-port Read Only RAM                    : 1
-# Adders/Subtractors                                   : 6
+# Multipliers                                          : 3
+ 19x19-bit multiplier                                  : 3
+# Adders/Subtractors                                   : 12
  10-bit adder                                          : 2
- 10-bit addsub                                         : 1
- 11-bit adder                                          : 1
- 11-bit subtractor                                     : 1
+ 10-bit addsub                                         : 2
+ 11-bit adder                                          : 2
+ 11-bit subtractor                                     : 2
+ 19-bit adder                                          : 1
+ 19-bit subtractor                                     : 2
  28-bit adder                                          : 1
-# Registers                                            : 9
- 1-bit register                                        : 5
- 10-bit register                                       : 3
+# Registers                                            : 14
+ 1-bit register                                        : 6
+ 10-bit register                                       : 4
+ 19-bit register                                       : 3
  28-bit register                                       : 1
-# Comparators                                          : 12
+# Comparators                                          : 15
  10-bit comparator greater                             : 4
- 10-bit comparator lessequal                           : 6
- 11-bit comparator lessequal                           : 1
- 32-bit comparator lessequal                           : 1
+ 19-bit comparator greater                             : 1
+ 19-bit comparator lessequal                           : 8
+ 32-bit comparator lessequal                           : 2
 # Multiplexers                                         : 4
  1-bit 2-to-1 multiplexer                              : 4
 
@@ -215,6 +239,64 @@ Macro Statistics
 *                       Advanced HDL Synthesis                          *
 =========================================================================
 
+WARNING:Xst:1710 - FF/Latch <bombY_10> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_11> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_12> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_13> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_14> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_15> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_16> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_17> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_18> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_0> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_1> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_2> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_3> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_4> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_5> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_6> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_7> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_8> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_9> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_10> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_11> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_12> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_13> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_14> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_15> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_16> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_17> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_18> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_1> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_2> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_3> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_4> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_5> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_6> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_7> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_8> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_9> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_10> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_11> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_12> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_13> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_14> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_15> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_16> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_17> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_18> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_1> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_2> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_3> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_4> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_5> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_6> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_7> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_8> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_9> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2404 -  FFs/Latches <bombRad<18:4>> (without init value) have a constant value of 0 in block <vga_demo>.
 
 Synthesizing (advanced) Unit <hvsync_generator>.
 The following registers are absorbed into counter <CounterX>: 1 register on signal <CounterX>.
@@ -222,7 +304,8 @@ The following registers are absorbed into counter <CounterY>: 1 register on sign
 Unit <hvsync_generator> synthesized (advanced).
 
 Synthesizing (advanced) Unit <vga_demo>.
-The following registers are absorbed into accumulator <position>: 1 register on signal <position>.
+The following registers are absorbed into accumulator <positionX>: 1 register on signal <positionX>.
+The following registers are absorbed into accumulator <positionY>: 1 register on signal <positionY>.
 The following registers are absorbed into counter <DIV_CLK>: 1 register on signal <DIV_CLK>.
 INFO:Xst:3218 - HDL ADVISOR - The RAM <Mram_SSD_CATHODES> will be implemented on LUTs either because you have described an asynchronous read or because of currently unsupported block RAM features. If you have described an asynchronous read, making it synchronous would allow you to take advantage of available block RAM resources, for optimized device usage and improved timings. Please refer to your documentation for coding guidelines.
     -----------------------------------------------------------------------
@@ -243,21 +326,26 @@ Advanced HDL Synthesis Report
 Macro Statistics
 # RAMs                                                 : 1
  16x7-bit single-port distributed Read Only RAM        : 1
-# Adders/Subtractors                                   : 2
- 11-bit adder                                          : 1
- 11-bit subtractor                                     : 1
+# Multipliers                                          : 3
+ 19x19-bit multiplier                                  : 2
+ 5x5-bit multiplier                                    : 1
+# Adders/Subtractors                                   : 7
+ 11-bit adder                                          : 2
+ 11-bit subtractor                                     : 2
+ 19-bit adder                                          : 1
+ 19-bit subtractor                                     : 2
 # Counters                                             : 3
  10-bit up counter                                     : 2
  28-bit up counter                                     : 1
-# Accumulators                                         : 1
- 10-bit updown accumulator                             : 1
-# Registers                                            : 5
- Flip-Flops                                            : 5
-# Comparators                                          : 12
+# Accumulators                                         : 2
+ 10-bit updown accumulator                             : 2
+# Registers                                            : 48
+ Flip-Flops                                            : 48
+# Comparators                                          : 15
  10-bit comparator greater                             : 4
- 10-bit comparator lessequal                           : 6
- 11-bit comparator lessequal                           : 1
- 32-bit comparator lessequal                           : 1
+ 19-bit comparator greater                             : 1
+ 19-bit comparator lessequal                           : 8
+ 32-bit comparator lessequal                           : 2
 # Multiplexers                                         : 4
  1-bit 2-to-1 multiplexer                              : 4
 
@@ -266,6 +354,48 @@ Macro Statistics
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
+WARNING:Xst:1710 - FF/Latch <bombX_2> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_3> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_4> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_5> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_6> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_7> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_8> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_9> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_10> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_11> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_12> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_13> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_14> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_15> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_16> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_17> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_18> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_0> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_1> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_2> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombRad_3> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_1> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_2> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_3> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_4> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_5> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_6> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_7> (without init value) has a constant value of 1 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_8> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_9> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_10> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_11> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_12> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_13> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_14> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_15> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_16> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_17> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombY_18> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <bombX_1> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:2677 - Node <DIV_CLK_22> of sequential type is unconnected in block <vga_demo>.
 WARNING:Xst:2677 - Node <DIV_CLK_23> of sequential type is unconnected in block <vga_demo>.
 WARNING:Xst:2677 - Node <DIV_CLK_24> of sequential type is unconnected in block <vga_demo>.
@@ -274,15 +404,16 @@ WARNING:Xst:2677 - Node <DIV_CLK_26> of sequential type is unconnected in block 
 WARNING:Xst:2677 - Node <DIV_CLK_27> of sequential type is unconnected in block <vga_demo>.
 
 Optimizing unit <vga_demo> ...
-WARNING:Xst:1710 - FF/Latch <position_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <positionX_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <positionY_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
 
 Optimizing unit <hvsync_generator> ...
-WARNING:Xst:1710 - FF/Latch <position_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <positionX_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <positionY_0> (without init value) has a constant value of 0 in block <vga_demo>. This FF/Latch will be trimmed during the optimization process.
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block vga_demo, actual ratio is 1.
-FlipFlop position_2 has been replicated 1 time(s)
+Found area constraint ratio of 100 (+ 5) on block vga_demo, actual ratio is 3.
 
 Final Macro Processing ...
 
@@ -290,8 +421,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 57
- Flip-Flops                                            : 57
+# Registers                                            : 66
+ Flip-Flops                                            : 66
 
 =========================================================================
 
@@ -314,31 +445,34 @@ Top Level Output File Name         : vga_demo.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 255
+# BELS                             : 379
 #      BUF                         : 3
 #      GND                         : 1
-#      INV                         : 6
+#      INV                         : 9
 #      LUT1                        : 39
-#      LUT2                        : 10
-#      LUT3                        : 18
-#      LUT4                        : 30
-#      LUT5                        : 33
-#      LUT6                        : 23
-#      MUXCY                       : 49
+#      LUT2                        : 36
+#      LUT3                        : 14
+#      LUT4                        : 46
+#      LUT5                        : 32
+#      LUT6                        : 56
+#      MUXCY                       : 73
+#      MUXF7                       : 4
 #      VCC                         : 1
-#      XORCY                       : 42
-# FlipFlops/Latches                : 57
-#      FD                          : 23
+#      XORCY                       : 65
+# FlipFlops/Latches                : 66
+#      FD                          : 3
 #      FDC                         : 22
-#      FDR                         : 2
-#      FDRE                        : 6
-#      FDSE                        : 4
+#      FDR                         : 13
+#      FDRE                        : 21
+#      FDSE                        : 7
 # Clock Buffers                    : 2
 #      BUFG                        : 1
 #      BUFGP                       : 1
-# IO Buffers                       : 34
-#      IBUF                        : 4
+# IO Buffers                       : 36
+#      IBUF                        : 6
 #      OBUF                        : 30
+# DSPs                             : 2
+#      DSP48A1                     : 2
 
 Device utilization summary:
 ---------------------------
@@ -347,23 +481,24 @@ Selected Device : 6slx16csg324-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:              57  out of  18224     0%  
- Number of Slice LUTs:                  159  out of   9112     1%  
-    Number used as Logic:               159  out of   9112     1%  
+ Number of Slice Registers:              66  out of  18224     0%  
+ Number of Slice LUTs:                  232  out of   9112     2%  
+    Number used as Logic:               232  out of   9112     2%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    160
-   Number with an unused Flip Flop:     103  out of    160    64%  
-   Number with an unused LUT:             1  out of    160     0%  
-   Number of fully used LUT-FF pairs:    56  out of    160    35%  
-   Number of unique control sets:         5
+ Number of LUT Flip Flop pairs used:    253
+   Number with an unused Flip Flop:     187  out of    253    73%  
+   Number with an unused LUT:            21  out of    253     8%  
+   Number of fully used LUT-FF pairs:    45  out of    253    17%  
+   Number of unique control sets:         9
 
 IO Utilization: 
  Number of IOs:                          37
- Number of bonded IOBs:                  35  out of    232    15%  
+ Number of bonded IOBs:                  37  out of    232    15%  
 
 Specific Feature Utilization:
  Number of BUFG/BUFGCTRLs:                2  out of     16    12%  
+ Number of DSP48A1s:                      2  out of     32     6%  
 
 ---------------------------
 Partition Resource Summary:
@@ -386,9 +521,9 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-DIV_CLK_1                          | BUFG                   | 25    |
+DIV_CLK_1                          | BUFG                   | 26    |
 ClkPort                            | BUFGP                  | 22    |
-DIV_CLK_21                         | NONE(position_1)       | 10    |
+DIV_CLK_21                         | NONE(positionX_1)      | 18    |
 -----------------------------------+------------------------+-------+
 INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
 
@@ -400,10 +535,10 @@ Timing Summary:
 ---------------
 Speed Grade: -3
 
-   Minimum period: 3.800ns (Maximum Frequency: 263.175MHz)
-   Minimum input arrival time before clock: 5.577ns
-   Maximum output required time after clock: 5.298ns
-   Maximum combinational path delay: 6.416ns
+   Minimum period: 9.844ns (Maximum Frequency: 101.589MHz)
+   Minimum input arrival time before clock: 6.071ns
+   Maximum output required time after clock: 5.295ns
+   Maximum combinational path delay: 6.402ns
 
 Timing Details:
 ---------------
@@ -411,27 +546,39 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'DIV_CLK_1'
-  Clock period: 3.800ns (frequency: 263.175MHz)
-  Total number of paths / destination ports: 534 / 27
+  Clock period: 9.844ns (frequency: 101.589MHz)
+  Total number of paths / destination ports: 88507 / 59
 -------------------------------------------------------------------------
-Delay:               3.800ns (Levels of Logic = 3)
+Delay:               9.844ns (Levels of Logic = 15)
   Source:            syncgen/CounterY_8 (FF)
-  Destination:       syncgen/CounterY_0 (FF)
+  Destination:       vga_b (FF)
   Source Clock:      DIV_CLK_1 rising
   Destination Clock: DIV_CLK_1 rising
 
-  Data Path: syncgen/CounterY_8 to syncgen/CounterY_0
+  Data Path: syncgen/CounterY_8 to vga_b
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q              10   0.447   1.201  syncgen/CounterY_8 (syncgen/CounterY_8)
-     LUT6:I1->O            1   0.203   0.580  syncgen/Mcount_CounterY_val_SW0 (N10)
-     LUT6:I5->O           10   0.205   0.857  syncgen/Mcount_CounterY_val (syncgen/Mcount_CounterY_val)
-     LUT5:I4->O            1   0.205   0.000  syncgen/CounterY_0_rstpot (syncgen/CounterY_0_rstpot)
-     FD:D                      0.102          syncgen/CounterY_0
+     FDRE:C->Q            12   0.447   1.253  syncgen/CounterY_8 (syncgen/CounterY_8)
+     LUT6:I1->O           16   0.203   1.004  Mmult_n0156_submult_1_CounterY[18]_bombY[18]_sub_45_OUT<0>_x_CounterY[18]_bombY[18]_sub_45_OUT<18>_mand1 (Mmult_n0156_submult_1_CounterY[18]_bombY[18]_sub_45_OUT<0>_x_CounterY[18]_bombY[18]_sub_45_OUT<18>_mand)
+     DSP48A1:B11->M0       1   3.364   0.684  Mmult_n0156_submult_0 (Mmult_n0156_submult_0_0)
+     LUT2:I0->O            1   0.203   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_lut<0> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_lut<0>)
+     MUXCY:S->O            1   0.172   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<0> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<0>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<1> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<1>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<2> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<2>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<3> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<3>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<4> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<4>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<5> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<5>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<6> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<6>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<7> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<7>)
+     MUXCY:CI->O           1   0.019   0.000  Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<8> (Madd_CounterY[18]_CounterX[18]_add_50_OUT_cy<8>)
+     XORCY:CI->O           2   0.180   0.845  Madd_CounterY[18]_CounterX[18]_add_50_OUT_xor<9> (CounterY[18]_CounterX[18]_add_50_OUT<9>)
+     LUT4:I1->O            1   0.205   0.827  vga_b_rstpot_SW0 (N40)
+     LUT6:I2->O            1   0.203   0.000  vga_b_rstpot (vga_b_rstpot)
+     FD:D                      0.102          vga_b
     ----------------------------------------
-    Total                      3.800ns (1.162ns logic, 2.638ns route)
-                                       (30.6% logic, 69.4% route)
+    Total                      9.844ns (5.231ns logic, 4.613ns route)
+                                       (53.1% logic, 46.9% route)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'ClkPort'
@@ -479,33 +626,35 @@ Delay:               2.066ns (Levels of Logic = 23)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'DIV_CLK_21'
-  Clock period: 3.601ns (frequency: 277.670MHz)
-  Total number of paths / destination ports: 57 / 10
+  Clock period: 5.140ns (frequency: 194.568MHz)
+  Total number of paths / destination ports: 162 / 18
 -------------------------------------------------------------------------
-Delay:               3.601ns (Levels of Logic = 3)
-  Source:            position_3 (FF)
-  Destination:       position_9 (FF)
+Delay:               5.140ns (Levels of Logic = 5)
+  Source:            positionY_3 (FF)
+  Destination:       positionY_9 (FF)
   Source Clock:      DIV_CLK_21 rising
   Destination Clock: DIV_CLK_21 rising
 
-  Data Path: position_3 to position_9
+  Data Path: positionY_3 to positionY_9
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDRE:C->Q            19   0.447   1.176  position_3 (position_3)
-     LUT5:I3->O            4   0.203   0.684  Maccum_position_cy<5>12_SW0 (N18)
-     LUT5:I4->O            1   0.205   0.580  Maccum_position_cy<5>12_SW2 (N27)
-     LUT6:I5->O            1   0.205   0.000  Maccum_position_xor<7>11 (Result<7>1)
-     FDSE:D                    0.102          position_7
+     FDRE:C->Q            21   0.447   1.458  positionY_3 (positionY_3)
+     LUT5:I0->O            4   0.203   0.912  Maccum_positionY_lut<3>1 (Maccum_positionY_lut<3>)
+     LUT6:I3->O            1   0.205   0.000  Maccum_positionY_cy<5>12_G (N54)
+     MUXF7:I1->O           4   0.140   0.684  Maccum_positionY_cy<5>12 (Maccum_positionY_cy<5>)
+     LUT5:I4->O            1   0.205   0.580  Maccum_positionY_cy<8>11 (Maccum_positionY_cy<8>1)
+     LUT5:I4->O            1   0.205   0.000  Maccum_positionY_xor<9>11 (Result<9>2)
+     FDRE:D                    0.102          positionY_9
     ----------------------------------------
-    Total                      3.601ns (1.162ns logic, 2.439ns route)
-                                       (32.3% logic, 67.7% route)
+    Total                      5.140ns (1.507ns logic, 3.633ns route)
+                                       (29.3% logic, 70.7% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'ClkPort'
   Total number of paths / destination ports: 22 / 22
 -------------------------------------------------------------------------
-Offset:              4.275ns (Levels of Logic = 2)
+Offset:              4.261ns (Levels of Logic = 2)
   Source:            Sw0 (PAD)
   Destination:       DIV_CLK_0 (FF)
   Destination Clock: ClkPort rising
@@ -515,59 +664,60 @@ Offset:              4.275ns (Levels of Logic = 2)
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      IBUF:I->O             1   1.222   0.579  Sw0_IBUF (Sw0_IBUF)
-     BUF:I->O             45   0.568   1.476  BUF2 (LD4_OBUF)
+     BUF:I->O             44   0.568   1.462  BUF2 (LD4_OBUF)
      FDC:CLR                   0.430          DIV_CLK_0
     ----------------------------------------
-    Total                      4.275ns (2.220ns logic, 2.055ns route)
-                                       (51.9% logic, 48.1% route)
+    Total                      4.261ns (2.220ns logic, 2.041ns route)
+                                       (52.1% logic, 47.9% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'DIV_CLK_21'
-  Total number of paths / destination ports: 82 / 29
+  Total number of paths / destination ports: 474 / 52
 -------------------------------------------------------------------------
-Offset:              4.594ns (Levels of Logic = 4)
+Offset:              6.071ns (Levels of Logic = 6)
   Source:            btnD (PAD)
-  Destination:       position_9 (FF)
+  Destination:       positionX_9 (FF)
   Destination Clock: DIV_CLK_21 rising
 
-  Data Path: btnD to position_9
+  Data Path: btnD to positionX_9
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            18   1.222   1.394  btnD_IBUF (btnD_IBUF)
-     LUT5:I0->O            4   0.203   0.684  Maccum_position_cy<5>12_SW0 (N18)
-     LUT5:I4->O            1   0.205   0.580  Maccum_position_cy<5>12_SW2 (N27)
-     LUT6:I5->O            1   0.205   0.000  Maccum_position_xor<7>11 (Result<7>1)
-     FDSE:D                    0.102          position_7
+     IBUF:I->O            22   1.222   1.381  btnD_IBUF (btnD_IBUF)
+     LUT4:I0->O            8   0.203   1.147  btnL_btnR_AND_11_o1 (Maccum_positionX_lut<0>)
+     LUT6:I1->O            1   0.203   0.000  Maccum_positionX_cy<5>12_G (N52)
+     MUXF7:I1->O           4   0.140   0.684  Maccum_positionX_cy<5>12 (Maccum_positionX_cy<5>)
+     LUT5:I4->O            1   0.205   0.580  Maccum_positionX_cy<8>11 (Maccum_positionX_cy<8>1)
+     LUT5:I4->O            1   0.205   0.000  Maccum_positionX_xor<9>11 (Result<9>1)
+     FDRE:D                    0.102          positionX_9
     ----------------------------------------
-    Total                      4.594ns (1.937ns logic, 2.657ns route)
-                                       (42.2% logic, 57.8% route)
+    Total                      6.071ns (2.280ns logic, 3.791ns route)
+                                       (37.6% logic, 62.4% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'DIV_CLK_1'
   Total number of paths / destination ports: 21 / 21
 -------------------------------------------------------------------------
-Offset:              5.577ns (Levels of Logic = 4)
+Offset:              5.425ns (Levels of Logic = 3)
   Source:            Sw0 (PAD)
-  Destination:       syncgen/CounterY_0 (FF)
+  Destination:       syncgen/CounterX_0 (FF)
   Destination Clock: DIV_CLK_1 rising
 
-  Data Path: Sw0 to syncgen/CounterY_0
+  Data Path: Sw0 to syncgen/CounterX_0
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      IBUF:I->O             1   1.222   0.579  Sw0_IBUF (Sw0_IBUF)
-     BUF:I->O             45   0.568   1.841  BUF2 (LD4_OBUF)
-     LUT6:I0->O           10   0.203   0.857  syncgen/Mcount_CounterY_val (syncgen/Mcount_CounterY_val)
-     LUT5:I4->O            1   0.205   0.000  syncgen/CounterY_0_rstpot (syncgen/CounterY_0_rstpot)
-     FD:D                      0.102          syncgen/CounterY_0
+     BUF:I->O             44   0.568   1.567  BUF2 (LD4_OBUF)
+     LUT2:I0->O           10   0.203   0.856  syncgen/Mcount_CounterX_val1 (syncgen/Mcount_CounterX_val)
+     FDR:R                     0.430          syncgen/CounterX_0
     ----------------------------------------
-    Total                      5.577ns (2.300ns logic, 3.277ns route)
-                                       (41.2% logic, 58.8% route)
+    Total                      5.425ns (2.423ns logic, 3.002ns route)
+                                       (44.7% logic, 55.3% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'DIV_CLK_1'
-  Total number of paths / destination ports: 4 / 4
+  Total number of paths / destination ports: 5 / 5
 -------------------------------------------------------------------------
 Offset:              4.382ns (Levels of Logic = 2)
   Source:            syncgen/vga_HS (FF)
@@ -609,27 +759,27 @@ Offset:              5.001ns (Levels of Logic = 2)
 Timing constraint: Default OFFSET OUT AFTER for Clock 'DIV_CLK_21'
   Total number of paths / destination ports: 21 / 7
 -------------------------------------------------------------------------
-Offset:              5.298ns (Levels of Logic = 2)
-  Source:            position_1 (FF)
-  Destination:       Cd (PAD)
+Offset:              5.295ns (Levels of Logic = 2)
+  Source:            positionY_2 (FF)
+  Destination:       Ca (PAD)
   Source Clock:      DIV_CLK_21 rising
 
-  Data Path: position_1 to Cd
+  Data Path: positionY_2 to Ca
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDRE:C->Q            23   0.447   1.498  position_1 (position_1)
-     LUT5:I0->O            1   0.203   0.579  Mram_SSD_CATHODES31 (Cd_OBUF)
-     OBUF:I->O                 2.571          Cd_OBUF (Cd)
+     FDRE:C->Q            21   0.447   1.458  positionY_2 (positionY_2)
+     LUT5:I0->O            2   0.203   0.616  Mram_SSD_CATHODES61 (Ca_OBUF)
+     OBUF:I->O                 2.571          Ca_OBUF (Ca)
     ----------------------------------------
-    Total                      5.298ns (3.221ns logic, 2.077ns route)
+    Total                      5.295ns (3.221ns logic, 2.074ns route)
                                        (60.8% logic, 39.2% route)
 
 =========================================================================
 Timing constraint: Default path analysis
   Total number of paths / destination ports: 2 / 2
 -------------------------------------------------------------------------
-Delay:               6.416ns (Levels of Logic = 3)
+Delay:               6.402ns (Levels of Logic = 3)
   Source:            Sw0 (PAD)
   Destination:       LD4 (PAD)
 
@@ -638,11 +788,11 @@ Delay:               6.416ns (Levels of Logic = 3)
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      IBUF:I->O             1   1.222   0.579  Sw0_IBUF (Sw0_IBUF)
-     BUF:I->O             45   0.568   1.476  BUF2 (LD4_OBUF)
+     BUF:I->O             44   0.568   1.462  BUF2 (LD4_OBUF)
      OBUF:I->O                 2.571          LD4_OBUF (LD4)
     ----------------------------------------
-    Total                      6.416ns (4.361ns logic, 2.055ns route)
-                                       (68.0% logic, 32.0% route)
+    Total                      6.402ns (4.361ns logic, 2.041ns route)
+                                       (68.1% logic, 31.9% route)
 
 =========================================================================
 
@@ -662,8 +812,8 @@ Clock to Setup on destination clock DIV_CLK_1
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-DIV_CLK_1      |    3.800|         |         |         |
-DIV_CLK_21     |    5.631|         |         |         |
+DIV_CLK_1      |    9.844|         |         |         |
+DIV_CLK_21     |    7.428|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 Clock to Setup on destination clock DIV_CLK_21
@@ -671,21 +821,21 @@ Clock to Setup on destination clock DIV_CLK_21
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-DIV_CLK_1      |    4.983|         |         |         |
-DIV_CLK_21     |    3.601|         |         |         |
+DIV_CLK_1      |    6.351|         |         |         |
+DIV_CLK_21     |    5.140|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 15.00 secs
-Total CPU time to Xst completion: 14.93 secs
+Total REAL time to Xst completion: 25.00 secs
+Total CPU time to Xst completion: 25.01 secs
  
 --> 
 
-Total memory usage is 220152 kilobytes
+Total memory usage is 221592 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   22 (   0 filtered)
+Number of warnings :  124 (   0 filtered)
 Number of infos    :    2 (   0 filtered)
 

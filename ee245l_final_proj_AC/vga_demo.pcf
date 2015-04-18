@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Fri Apr 17 17:09:57 2015
+// Written by: Map P.20131013 on Fri Apr 17 21:05:17 2015
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -15,12 +15,14 @@ COMP "An2" LOCATE = SITE "P18" LEVEL 1;
 COMP "An3" LOCATE = SITE "P17" LEVEL 1;
 COMP "vga_g" LOCATE = SITE "P8" LEVEL 1;
 COMP "Ca" LOCATE = SITE "T17" LEVEL 1;
+COMP "btnL" LOCATE = SITE "C4" LEVEL 1;
 COMP "Cb" LOCATE = SITE "T18" LEVEL 1;
 COMP "Cc" LOCATE = SITE "U17" LEVEL 1;
 COMP "Cd" LOCATE = SITE "U18" LEVEL 1;
 COMP "Ce" LOCATE = SITE "M14" LEVEL 1;
 COMP "Cf" LOCATE = SITE "N14" LEVEL 1;
 COMP "Cg" LOCATE = SITE "L14" LEVEL 1;
+COMP "btnR" LOCATE = SITE "D9" LEVEL 1;
 COMP "btnU" LOCATE = SITE "A8" LEVEL 1;
 COMP "St_ce_bar" LOCATE = SITE "L17" LEVEL 1;
 COMP "vga_h_sync" LOCATE = SITE "N6" LEVEL 1;
