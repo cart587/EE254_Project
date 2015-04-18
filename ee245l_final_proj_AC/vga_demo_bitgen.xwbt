@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.ncd
+OUTFILE=C:\Xilinx_projects\ee245l_final_proj_AC\vga_demo.bit
+FAMILY=Spartan6
+PART=xc6slx16-3csg324
+WORKINGDIR=C:\Xilinx_projects\ee245l_final_proj_AC
+LICENSE=ISE
+USER_INFO=174127445_174127446_210579957_241
