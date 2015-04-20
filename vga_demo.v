@@ -3,11 +3,11 @@
 // VGA verilog template
 // Author:  Da Cheng
 //////////////////////////////////////////////////////////////////////////////////
-module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, btnL, btnR, btnU, btnD,
+module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, btnC, btnL, btnR, btnU, btnD,
 	St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar,
 	An0, An1, An2, An3, Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp,
 	LD0, LD1, LD2, LD3, LD4, LD5, LD6, LD7);
-	input ClkPort, btnL, btnR, btnU, btnD, Sw0, Sw1;
+	input ClkPort, btnC, btnL, btnR, btnU, btnD, Sw0, Sw1;
 	output St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar;
 	output vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b;
 	output An0, An1, An2, An3, Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp;
@@ -51,48 +51,97 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	reg [18:0] bombY;
 	reg [18:0] bombX;
 	reg [18:0] bombRad;
+	reg [1:0] bombCount;
+	
 	
 	always @(posedge DIV_CLK[21])
 		begin
 			if(reset)
 			begin
-				positionY<=240;
-				positionX<=100;
-				bombY <=240;
-				bombX <=240;
+				positionY <= 240;
+				positionX <= 100;
+				bombY <= 240;
+				bombX <= 100;
 				bombRad <= 15;
+				bombCount <= 0;
 			end
 			else if(btnD && ~btnU && ~btnL && ~btnR)
 			begin
-			if(!(MAZE_WALL || MAZE_BLOCK))
-				positionY<=positionY+2;
+				if(positionY > 464)
+					positionY <= 464;
+				else
+					positionY <= positionY + 6;
 			end
 			else if(btnU && ~btnD && ~btnL && ~btnR)
 			begin
-			if(!(MAZE_WALL || MAZE_BLOCK))
-				positionY<=positionY-2;	
+				if(positionY < 16)
+					positionY <= 16;
+				else
+					positionY <= positionY - 6;
 			end
 			else if(btnL && ~btnD && ~btnU && ~btnR)
 			begin
-			if(!(MAZE_WALL || MAZE_BLOCK))
-				positionX<=positionX-2;	
+				if(positionX < 15)
+					positionX <= 15;
+				else
+					positionX <= positionX - 6;
 			end
 			else if(btnR && ~btnU && ~btnL && ~btnD)
 			begin
-			if(!(MAZE_WALL || MAZE_BLOCK))
-				positionX<=positionX+2;
+				if(positionX > 625)
+					positionX <= 625;
+				else
+					positionX <= positionX + 6;
 			end
+			
+			if(btnC)
+			begin
+				bombCount <= bombCount + 1;
+				bombY <= positionY;
+				bombX <= positionX;
+			end	
 		end
 	
+	wire BOMB_DROP = (((CounterY-bombY)*(CounterY-bombY)) + ((CounterX-bombX)*(CounterX-bombX))) < (bombRad*bombRad) && (bombCount == 1);
+	
 	wire MAZE_WALL_X = (CounterX >= 0 && CounterX <= 5) || (CounterX >= 635 && CounterX <= 640);
-	wire MAZE_WALL_Y = (CounterY >= 0 && CounterY <= 6) || (CounterY >= 468 && CounterY <= 480);
+	wire MAZE_WALL_Y = (CounterY >= 0 && CounterY <= 6) || (CounterY >= 474 && CounterY <= 480);
 	wire MAZE_WALL = MAZE_WALL_X || MAZE_WALL_Y;
 	
-	wire MAZE_BLOCK = CounterX[5:3] == 7 && CounterY[5:3] == 7;
+	wire MAZE_BLOCK_X_0 = CounterX >= 75 && CounterX <= 145;
+	wire MAZE_BLOCK_X_1 = CounterX >= 215 && CounterX <= 285;
+	wire MAZE_BLOCK_X_2 = CounterX >= 355 && CounterX <= 425;
+	wire MAZE_BLOCK_X_3 = CounterX >= 495 && CounterX <= 565;
+	wire MAZE_BLOCK_Y_0 = CounterY >= 58 && CounterY <= 110;
+	wire MAZE_BLOCK_Y_1 = CounterY >= 162 && CounterY <= 214;
+	wire MAZE_BLOCK_Y_2 = CounterY >= 266 && CounterY <= 318;
+	wire MAZE_BLOCK_Y_3 = CounterY >= 370 && CounterY <= 422;
 	
-	wire R = (CounterY>=(positionY-10) && CounterY<=(positionY+10) && CounterX>=(positionX-10) && CounterX<=(positionX+10));
+	wire MAZE_BLOCK_0 = MAZE_BLOCK_X_0 && MAZE_BLOCK_Y_0;
+	wire MAZE_BLOCK_1 = MAZE_BLOCK_X_0 && MAZE_BLOCK_Y_1;
+	wire MAZE_BLOCK_2 = MAZE_BLOCK_X_0 && MAZE_BLOCK_Y_2;
+	wire MAZE_BLOCK_3 = MAZE_BLOCK_X_0 && MAZE_BLOCK_Y_3;
+	wire MAZE_BLOCK_4 = MAZE_BLOCK_X_1 && MAZE_BLOCK_Y_0;
+	wire MAZE_BLOCK_5 = MAZE_BLOCK_X_1 && MAZE_BLOCK_Y_1;
+	wire MAZE_BLOCK_6 = MAZE_BLOCK_X_1 && MAZE_BLOCK_Y_2;
+	wire MAZE_BLOCK_7 = MAZE_BLOCK_X_1 && MAZE_BLOCK_Y_3;
+	wire MAZE_BLOCK_8 = MAZE_BLOCK_X_2 && MAZE_BLOCK_Y_0;
+	wire MAZE_BLOCK_9 = MAZE_BLOCK_X_2 && MAZE_BLOCK_Y_1;
+	wire MAZE_BLOCK_10 = MAZE_BLOCK_X_2 && MAZE_BLOCK_Y_2;
+	wire MAZE_BLOCK_11 = MAZE_BLOCK_X_2 && MAZE_BLOCK_Y_3;
+	wire MAZE_BLOCK_12 = MAZE_BLOCK_X_3 && MAZE_BLOCK_Y_0;
+	wire MAZE_BLOCK_13 = MAZE_BLOCK_X_3 && MAZE_BLOCK_Y_1;
+	wire MAZE_BLOCK_14 = MAZE_BLOCK_X_3 && MAZE_BLOCK_Y_2;
+	wire MAZE_BLOCK_15 = MAZE_BLOCK_X_3 && MAZE_BLOCK_Y_3;
+	
+	wire MAZE_BLOCK = MAZE_BLOCK_0 || MAZE_BLOCK_1 || MAZE_BLOCK_2 || MAZE_BLOCK_3 || MAZE_BLOCK_4 || MAZE_BLOCK_5 || MAZE_BLOCK_6 || MAZE_BLOCK_7 || 
+		MAZE_BLOCK_8 || MAZE_BLOCK_9 || MAZE_BLOCK_10 || MAZE_BLOCK_11 || MAZE_BLOCK_12 || MAZE_BLOCK_13 || MAZE_BLOCK_14 || MAZE_BLOCK_15;
+
+
+	
+	wire R = (CounterY >= (positionY-10) && CounterY <= (positionY+10) && CounterX >= (positionX-10) && CounterX <= (positionX+10));
 	wire G = MAZE_WALL || MAZE_BLOCK;
-	wire B = (((CounterY-bombY)*(CounterY-bombY)) + ((CounterX-bombX)*(CounterX-bombX))) < (bombRad*bombRad);
+	wire B = BOMB_DROP;
 	
 	always @(posedge clk)
 	begin
