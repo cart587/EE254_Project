@@ -48,6 +48,10 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	//Player Variables
 	reg [9:0] positionY;
 	reg [9:0] positionX;
+	reg [9:0] velocityX;
+	reg [9:0] velocityY;
+	reg [1:0] direction;
+	
 	reg [18:0] bombY;
 	reg [18:0] bombX;
 	reg [18:0] bombRad;
@@ -57,81 +61,153 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	reg [4:0] explodeTimer;
 	reg explode;
 	
-	always @(posedge DIV_CLK[21])
+	wire maze_block_0 = (positionX > 55 && positionX < 165) && (positionY > 38 && positionY < 130);
+	wire maze_block_1 = (positionX > 195 && positionX < 305) && (positionY > 38 && positionY < 130);
+	wire maze_block_2 = (positionX > 335 && positionX < 445) && (positionY > 38 && positionY < 130);
+	wire maze_block_3 = (positionX > 475 && positionX < 585) && (positionY > 38 && positionY < 130);
+	wire maze_block_4 = (positionX > 55 && positionX < 165) && (positionY > 142 && positionY < 234);
+	wire maze_block_5 = (positionX > 195 && positionX < 305) && (positionY > 142 && positionY < 234);
+	wire maze_block_6 = (positionX > 335 && positionX < 445) && (positionY > 142 && positionY < 234);
+	wire maze_block_7 = (positionX > 475 && positionX < 585) && (positionY > 142 && positionY < 234);
+	wire maze_block_8 = (positionX > 55 && positionX < 165) && (positionY > 246 && positionY < 338);
+	wire maze_block_9 = (positionX > 195 && positionX < 305) && (positionY > 246 && positionY < 338);
+	wire maze_block_10 = (positionX > 335 && positionX < 445) && (positionY > 246 && positionY < 338);
+	wire maze_block_11 = (positionX > 475 && positionX < 585) && (positionY > 246 && positionY < 338);
+	wire maze_block_12 = (positionX > 55 && positionX < 165) && (positionY > 350 && positionY < 442);
+	wire maze_block_13 = (positionX > 195 && positionX < 305) && (positionY > 350 && positionY < 442);
+	wire maze_block_14 = (positionX > 335 && positionX < 445) && (positionY > 350 && positionY < 442);
+	wire maze_block_15 = (positionX > 475 && positionX < 585) && (positionY > 350 && positionY < 442);
+	
+	always @ (posedge DIV_CLK[21])
+		begin
+			if (reset)
+				begin
+					velocityX <= 0;
+					velocityY <= 0;
+					direction <= 2'bXX;
+					bombY <= 240;
+					bombX <= 100;
+					bombRad <= 15;
+					bombCount <= 0;
+					bombTimer <= 0;
+					bombDelay <= 72; //3 seconds
+					explodeTimer <= 24;
+					explode <= 0;
+				end
+			else if (btnU && ~btnD && ~btnL && ~btnR)
+				begin
+					velocityY <= -3;
+					direction <= 0;
+				end
+			else if (btnD && ~btnU && ~btnL && ~btnR)
+				begin
+					velocityY <= 3;
+					direction <= 1;
+				end
+			else if (btnL && ~btnD && ~btnU && ~btnR)
+				begin
+					velocityX <= -3;
+					direction <= 2;
+				end
+			else if (btnR && ~btnU && ~btnL && ~btnD)
+				begin
+					velocityX <= 3;
+					direction <= 3;
+				end
+			else
+				begin
+					velocityX <= 0;
+					velocityY <= 0;
+				end
+			if(btnC && bombCount == 0 && bombTimer == 0 && explode == 0)
+				begin
+					bombCount <= bombCount + 1;
+					bombTimer <= bombDelay;
+					bombY <= positionY;
+					bombX <= positionX;
+				end
+				if(!(bombTimer == 0))
+					bombTimer<= bombTimer - 1;
+				else if((bombTimer == 0) && !(bombCount == 0))
+				begin
+					bombCount<= bombCount - 1;
+					explode <= 1;
+				end
+				
+				if(explode)
+					explodeTimer <=  explodeTimer - 1;
+					
+				if(explodeTimer == 0)
+				begin
+					explode <= 0;
+					explodeTimer <= 24;
+				end
+		end
+		
+	always @ (posedge DIV_CLK[21])	
 		begin
 			if(reset)
-			begin
-				positionY <= 240;
-				positionX <= 100;
-				bombY <= 240;
-				bombX <= 100;
-				bombRad <= 15;
-				bombCount <= 0;
-				bombTimer <= 0;
-				bombDelay <= 72; //3 seconds
-				explodeTimer <= 24;
-				explode <= 0;
-			end
-			else if(btnD && ~btnU && ~btnL && ~btnR)
-			begin
-				if(positionY > 464)
-					positionY <= 464;
-				else
-					positionY <= positionY + 6;
-			end
-			else if(btnU && ~btnD && ~btnL && ~btnR)
-			begin
-				if(positionY < 16)
-					positionY <= 16;
-				else
-					positionY <= positionY - 6;
-			end
-			else if(btnL && ~btnD && ~btnU && ~btnR)
-			begin
-				if(positionX < 15)
-					positionX <= 15;
-				else
-					positionX <= positionX - 6;
-			end
-			else if(btnR && ~btnU && ~btnL && ~btnD)
-			begin
-				if(positionX > 625)
-					positionX <= 625;
-				else
-					positionX <= positionX + 6;
-			end
-			
-			if(btnC && bombCount == 0 && bombTimer == 0 && explode == 0)
-			begin
-				bombCount <= bombCount + 1;
-				bombTimer <= bombDelay;
-				bombY <= positionY;
-				bombX <= positionX;
-			end
-			if(!(bombTimer == 0))
-				bombTimer<= bombTimer - 1;
-			else if((bombTimer == 0) && !(bombCount == 0))
-			begin
-				bombCount<= bombCount - 1;
-				explode <= 1;
-			end
-			
-			if(explode)
-				explodeTimer <=  explodeTimer - 1;
-				
-			if(explodeTimer == 0)
-			begin
-				explode <= 0;
-				explodeTimer <= 24;
-			end
-			/*Explosions
-			if(positionY <= 58 && !(explodeTimer == 0) && explode)
-				if((positionX >= 75 && positionX <= 145)||(positionX >= 215 && positionX <= 285)||(positionX >= 355 && positionX <= 425)||(positionX >= 495 && positionX <= 565))
-					EXPLOSION <= (CounterY >= 6 && CounterY <= 58) && (CounterX >= 5 && CounterX <= 635);
-				else
-					EXPLOSION <= (CounterY >= 6 && CounterY <= 454) && (CounterX >= 5 && CounterX <= 635);
-			else if(explodeTimer == 0)
-				EXPLOSION <= 0;*/
+				begin
+					positionX <= 100;
+					positionY <= 240;
+				end
+			else
+				begin
+					positionX <= positionX + velocityX;
+					positionY <= positionY + velocityY;
+					if (positionY < 26)
+						positionY <= 27;
+					else if (positionY > 454)
+						positionY <= 453;					
+					else if (positionX < 25)
+						positionX <= 26;
+					else if (positionX > 615)
+						positionX <= 614;
+					else if (direction == 0)
+						begin
+							if (maze_block_0 || maze_block_1 || maze_block_2 || maze_block_3)
+								positionY <= 131;
+							else if (maze_block_4 || maze_block_5 || maze_block_6 || maze_block_7)
+								positionY <= 235;
+							else if (maze_block_8 || maze_block_9 || maze_block_10 || maze_block_11)
+								positionY <= 339;
+							else if (maze_block_12 || maze_block_13 || maze_block_14 || maze_block_15)
+								positionY <= 443;
+						end
+					else if (direction == 1)
+						begin
+							if (maze_block_0 || maze_block_1 || maze_block_2 || maze_block_3)
+								positionY <= 37;
+							else if (maze_block_4 || maze_block_5 || maze_block_6 || maze_block_7)
+								positionY <= 141;
+							else if (maze_block_8 || maze_block_9 || maze_block_10 || maze_block_11)
+								positionY <= 245;
+							else if (maze_block_12 || maze_block_13 || maze_block_14 || maze_block_15)
+								positionY <= 349;
+						end
+					else if (direction == 2)
+						begin
+							if (maze_block_0 || maze_block_4 || maze_block_8 || maze_block_12)
+								positionX <= 166;
+							else if (maze_block_1 || maze_block_5 || maze_block_9 || maze_block_13)
+								positionX <= 306;
+							else if (maze_block_2 || maze_block_6 || maze_block_10 || maze_block_14)
+								positionX <= 446;
+							else if (maze_block_3 || maze_block_7 || maze_block_11 || maze_block_15)
+								positionX <= 586;
+						end
+					else if (direction == 3)
+						begin
+							if (maze_block_0 || maze_block_4 || maze_block_8 || maze_block_12)
+								positionX <= 54;
+							else if (maze_block_1 || maze_block_5 || maze_block_9 || maze_block_13)
+								positionX <= 194;
+							else if (maze_block_2 || maze_block_6 || maze_block_10 || maze_block_14)
+								positionX <= 334;
+							else if (maze_block_3 || maze_block_7 || maze_block_11 || maze_block_15)
+								positionX <= 474;
+						end			
+				end
 		end
 	
 	
@@ -181,10 +257,8 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	
 	wire MAZE_BLOCK = MAZE_BLOCK_0 || MAZE_BLOCK_1 || MAZE_BLOCK_2 || MAZE_BLOCK_3 || MAZE_BLOCK_4 || MAZE_BLOCK_5 || MAZE_BLOCK_6 || MAZE_BLOCK_7 || 
 		MAZE_BLOCK_8 || MAZE_BLOCK_9 || MAZE_BLOCK_10 || MAZE_BLOCK_11 || MAZE_BLOCK_12 || MAZE_BLOCK_13 || MAZE_BLOCK_14 || MAZE_BLOCK_15;
-
-
 	
-	wire R = (CounterY >= (positionY-10) && CounterY <= (positionY+10) && CounterX >= (positionX-10) && CounterX <= (positionX+10));
+	wire R = (CounterY >= (positionY-20) && CounterY <= (positionY+20) && CounterX >= (positionX-20) && CounterX <= (positionX+20));
 	wire G = MAZE_WALL || MAZE_BLOCK;
 	wire B = BOMB_DROP || EXPLOSION0 || EXPLOSION1 || EXPLOSION2 || EXPLOSION3 || EXPLOSION4 || EXPLOSION5 || EXPLOSION6 ||
 		EXPLOSION7 || EXPLOSION8 || EXPLOSION9;
