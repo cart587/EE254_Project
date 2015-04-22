@@ -3,11 +3,11 @@
 // VGA verilog template
 // Author:  Da Cheng
 //////////////////////////////////////////////////////////////////////////////////
-module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, btnL, btnR, btnU, btnD,
+module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, btnC, btnL, btnR, btnU, btnD,
 	St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar,
 	An0, An1, An2, An3, Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp,
 	LD0, LD1, LD2, LD3, LD4, LD5, LD6, LD7);
-	input ClkPort, btnL, btnR, btnU, btnD, Sw0, Sw1;
+	input ClkPort, btnC, btnL, btnR, btnU, btnD, Sw0, Sw1;
 	output St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar;
 	output vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b;
 	output An0, An1, An2, An3, Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp;
@@ -51,6 +51,11 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	reg [18:0] bombY;
 	reg [18:0] bombX;
 	reg [18:0] bombRad;
+	reg [1:0] bombCount;
+	reg [7:0] bombTimer;
+	reg [7:0] bombDelay;
+	reg [4:0] explodeTimer;
+	reg explode;
 	
 	always @(posedge DIV_CLK[21])
 		begin
@@ -59,8 +64,13 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 				positionY <= 240;
 				positionX <= 100;
 				bombY <= 240;
-				bombX <= 240;
+				bombX <= 100;
 				bombRad <= 15;
+				bombCount <= 0;
+				bombTimer <= 0;
+				bombDelay <= 72; //3 seconds
+				explodeTimer <= 24;
+				explode <= 0;
 			end
 			else if(btnD && ~btnU && ~btnL && ~btnR)
 			begin
@@ -90,7 +100,54 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 				else
 					positionX <= positionX + 6;
 			end
+			
+			if(btnC && bombCount == 0 && bombTimer == 0 && explode == 0)
+			begin
+				bombCount <= bombCount + 1;
+				bombTimer <= bombDelay;
+				bombY <= positionY;
+				bombX <= positionX;
+			end
+			if(!(bombTimer == 0))
+				bombTimer<= bombTimer - 1;
+			else if((bombTimer == 0) && !(bombCount == 0))
+			begin
+				bombCount<= bombCount - 1;
+				explode <= 1;
+			end
+			
+			if(explode)
+				explodeTimer <=  explodeTimer - 1;
+				
+			if(explodeTimer == 0)
+			begin
+				explode <= 0;
+				explodeTimer <= 24;
+			end
+			/*Explosions
+			if(positionY <= 58 && !(explodeTimer == 0) && explode)
+				if((positionX >= 75 && positionX <= 145)||(positionX >= 215 && positionX <= 285)||(positionX >= 355 && positionX <= 425)||(positionX >= 495 && positionX <= 565))
+					EXPLOSION <= (CounterY >= 6 && CounterY <= 58) && (CounterX >= 5 && CounterX <= 635);
+				else
+					EXPLOSION <= (CounterY >= 6 && CounterY <= 454) && (CounterX >= 5 && CounterX <= 635);
+			else if(explodeTimer == 0)
+				EXPLOSION <= 0;*/
 		end
+	
+	
+	
+	wire BOMB_DROP = (((CounterY-bombY)*(CounterY-bombY)) + ((CounterX-bombX)*(CounterX-bombX))) < (bombRad*bombRad) && (bombCount == 1) && bombTimer[3] == 0;
+	//wire EXPLOSION = (((CounterY >= bombY- 20) && (CounterY <= bombY + 20)) || ((CounterX >= bombX - 25) && (CounterX <= bombX + 25))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION0 = (bombY >= 6 && bombY <= 58) && (((CounterY >= 10) && (CounterY <= 54)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION1 = (bombY >= 110 && bombY <= 162) && (((CounterY >= 114) && (CounterY <= 158)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION2 = (bombY >= 214 && bombY <= 266) && (((CounterY >= 218) && (CounterY <= 262)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION3 = (bombY >= 318 && bombY <= 370) && (((CounterY >= 322) && (CounterY <= 366)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION4 = (bombY >= 422 && bombY <= 474) && (((CounterY >= 426) && (CounterY <= 470)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION5 = (bombX >= 5 && bombX <= 75) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 9) && (CounterX <= 69))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION6 = (bombX >= 145 && bombX <= 215) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 149) && (CounterX <= 211))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION7 = (bombX >= 285 && bombX <= 355) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 289) && (CounterX <= 351))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION8 = (bombX >= 425 && bombX <= 495) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 429) && (CounterX <= 491))) && !(explodeTimer == 0) && explode;
+	wire EXPLOSION9 = (bombX >= 565 && bombX <= 635) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 569) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
 	
 	wire MAZE_WALL_X = (CounterX >= 0 && CounterX <= 5) || (CounterX >= 635 && CounterX <= 640);
 	wire MAZE_WALL_Y = (CounterY >= 0 && CounterY <= 6) || (CounterY >= 474 && CounterY <= 480);
@@ -129,7 +186,8 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	
 	wire R = (CounterY >= (positionY-10) && CounterY <= (positionY+10) && CounterX >= (positionX-10) && CounterX <= (positionX+10));
 	wire G = MAZE_WALL || MAZE_BLOCK;
-	wire B = (((CounterY-bombY)*(CounterY-bombY)) + ((CounterX-bombX)*(CounterX-bombX))) < (bombRad*bombRad);
+	wire B = BOMB_DROP || EXPLOSION0 || EXPLOSION1 || EXPLOSION2 || EXPLOSION3 || EXPLOSION4 || EXPLOSION5 || EXPLOSION6 ||
+		EXPLOSION7 || EXPLOSION8 || EXPLOSION9;
 	
 	always @(posedge clk)
 	begin
