@@ -3,15 +3,15 @@
 // VGA verilog template
 // Author:  Da Cheng
 //////////////////////////////////////////////////////////////////////////////////
-module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, btnC, btnL, btnR, btnU, btnD,
-	St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar,
-	An0, An1, An2, An3, Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp,
-	LD0, LD1, LD2, LD3, LD4, LD5, LD6, LD7);
-	input ClkPort, btnC, btnL, btnR, btnU, btnD, Sw0, Sw1;
-	output St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar;
+module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
+	MemOE, MemWR, RamCS, FlashCS, QuadSpiFlashCS,
+	MISO, SS, MOSI, SCLK);
+	
+	input ClkPort, btnC;
+	input MISO;
+	output MemOE, MemWR, RamCS, FlashCS, QuadSpiFlashCS;
 	output vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b;
-	output An0, An1, An2, An3, Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp;
-	output LD0, LD1, LD2, LD3, LD4, LD5, LD6, LD7;
+	output SS, MOSI, SCLK;
 	reg vga_r, vga_g, vga_b;
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -20,8 +20,7 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	wire	reset, start, ClkPort, board_clk, clk, button_clk;
 	
 	BUF BUF1 (board_clk, ClkPort); 	
-	BUF BUF2 (reset, Sw0);
-	BUF BUF3 (start, Sw1);
+	BUF BUF2 (reset, btnC);
 	
 	reg [27:0]	DIV_CLK;
 	always @ (posedge board_clk, posedge reset)  
@@ -32,15 +31,47 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 			DIV_CLK <= DIV_CLK + 1'b1;
 	end	
 
-	assign	button_clk = DIV_CLK[18];
-	assign	clk = DIV_CLK[1];
-	assign 	{St_ce_bar, St_rp_bar, Mt_ce_bar, Mt_St_oe_bar, Mt_St_we_bar} = {5'b11111};
+	assign button_clk = DIV_CLK[18];
+	assign clk = DIV_CLK[1];
+	assign {MemOE, MemWR, RamCS, FlashCS, QuadSpiFlashCS} = {5'b11111};
 	
 	wire inDisplayArea;
 	wire [18:0] CounterX;
 	wire [18:0] CounterY;
+	
+	wire SS;
+	wire MOSI;
+	wire SCLK;
+	
+	wire [7:0] sndData = 8'b10000000;
+	wire sendRec;
+	wire [39:0] jstkData;
 
 	hvsync_generator syncgen(.clk(clk), .reset(reset),.vga_h_sync(vga_h_sync), .vga_v_sync(vga_v_sync), .inDisplayArea(inDisplayArea), .CounterX(CounterX), .CounterY(CounterY));
+	
+	//-----------------------------------------------
+	//  	  			PmodJSTK Interface
+	//-----------------------------------------------
+	PmodJSTK PmodJSTK_Int(
+			.CLK(clk),
+			.RST(reset),
+			.sndRec(sndRec),
+			.DIN(sndData),
+			.MISO(MISO),
+			.SS(SS),
+			.SCLK(SCLK),
+			.MOSI(MOSI),
+			.DOUT(jstkData)
+	);
+	
+	//-----------------------------------------------
+	//  			 Send Receive Generator
+	//-----------------------------------------------
+	ClkDiv_5Hz genSndRec(
+			.CLK(clk),
+			.RST(reset),
+			.CLKOUT(sndRec)
+	);
 	
 	/////////////////////////////////////////////////////////////////
 	///////////////		VGA control starts here		/////////////////
@@ -51,6 +82,11 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 	reg [9:0] velocityX;
 	reg [9:0] velocityY;
 	reg [1:0] direction;
+	
+	wire [9:0] joystickX = {jstkData[25:24], jstkData[39:32]};
+	wire [9:0] joystickY = {jstkData[9:8], jstkData[23:16]};
+	wire joystickBombButton = jstkData[1];
+	wire joystickStartButton = jstkData[2];
 	
 	reg [18:0] bombY;
 	reg [18:0] bombX;
@@ -90,26 +126,26 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 					bombRad <= 15;
 					bombCount <= 0;
 					bombTimer <= 0;
-					bombDelay <= 72; //3 seconds
+					bombDelay <= 96; //4 seconds
 					explodeTimer <= 24;
 					explode <= 0;
 				end
-			else if (btnU && ~btnD && ~btnL && ~btnR)
+			else if (joystickY > 700 && ~(joystickX < 300) && ~(joystickX > 700))
 				begin
 					velocityY <= -3;
 					direction <= 0;
 				end
-			else if (btnD && ~btnU && ~btnL && ~btnR)
+			else if (joystickY < 300 && ~(joystickX < 300) && ~(joystickX > 700))
 				begin
 					velocityY <= 3;
 					direction <= 1;
 				end
-			else if (btnL && ~btnD && ~btnU && ~btnR)
+			else if (joystickX < 300 && ~(joystickY < 300) && ~(joystickY > 700))
 				begin
 					velocityX <= -3;
 					direction <= 2;
 				end
-			else if (btnR && ~btnU && ~btnL && ~btnD)
+			else if (joystickX > 700 && ~(joystickY < 300) && ~(joystickY > 700))
 				begin
 					velocityX <= 3;
 					direction <= 3;
@@ -119,29 +155,28 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 					velocityX <= 0;
 					velocityY <= 0;
 				end
-			if(btnC && bombCount == 0 && bombTimer == 0 && explode == 0)
+			if(joystickBombButton && bombCount == 0 && bombTimer == 0 && explode == 0)
 				begin
 					bombCount <= bombCount + 1;
 					bombTimer <= bombDelay;
 					bombY <= positionY;
 					bombX <= positionX;
 				end
-				if(!(bombTimer == 0))
-					bombTimer<= bombTimer - 1;
-				else if((bombTimer == 0) && !(bombCount == 0))
-				begin
-					bombCount<= bombCount - 1;
-					explode <= 1;
-				end
+			if(!(bombTimer == 0))
+				bombTimer<= bombTimer - 1;
+			else if((bombTimer == 0) && !(bombCount == 0))
+			begin
+				bombCount<= bombCount - 1;
+				explode <= 1;
+			end			
+			if(explode)
+				explodeTimer <=  explodeTimer - 1;
 				
-				if(explode)
-					explodeTimer <=  explodeTimer - 1;
-					
-				if(explodeTimer == 0)
-				begin
-					explode <= 0;
-					explodeTimer <= 24;
-				end
+			if(explodeTimer == 0)
+			begin
+				explode <= 0;
+				explodeTimer <= 24;
+			end
 		end
 		
 	always @ (posedge DIV_CLK[21])	
@@ -210,10 +245,7 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 				end
 		end
 	
-	
-	
 	wire BOMB_DROP = (((CounterY-bombY)*(CounterY-bombY)) + ((CounterX-bombX)*(CounterX-bombX))) < (bombRad*bombRad) && (bombCount == 1) && bombTimer[3] == 0;
-	//wire EXPLOSION = (((CounterY >= bombY- 20) && (CounterY <= bombY + 20)) || ((CounterX >= bombX - 25) && (CounterX <= bombX + 25))) && !(explodeTimer == 0) && explode;
 	wire EXPLOSION0 = (bombY >= 6 && bombY <= 58) && (((CounterY >= 10) && (CounterY <= 54)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
 	wire EXPLOSION1 = (bombY >= 110 && bombY <= 162) && (((CounterY >= 114) && (CounterY <= 158)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
 	wire EXPLOSION2 = (bombY >= 214 && bombY <= 266) && (((CounterY >= 218) && (CounterY <= 262)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
@@ -270,96 +302,4 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, Sw0, Sw1, 
 		vga_b <= B & inDisplayArea;
 	end
 	
-	/////////////////////////////////////////////////////////////////
-	//////////////  	  VGA control ends here 	 ///////////////////
-	/////////////////////////////////////////////////////////////////
-	
-	/////////////////////////////////////////////////////////////////
-	//////////////  	  LD control starts here 	 ///////////////////
-	/////////////////////////////////////////////////////////////////
-	`define QI 			2'b00
-	`define QGAME_1 	2'b01
-	`define QGAME_2 	2'b10
-	`define QDONE 		2'b11
-	
-	reg [3:0] p2_score;
-	reg [3:0] p1_score;
-	reg [1:0] state;
-	wire LD0, LD1, LD2, LD3, LD4, LD5, LD6, LD7;
-	
-	assign LD0 = (p1_score == 4'b1010);
-	assign LD1 = (p2_score == 4'b1010);
-	
-	assign LD2 = start;
-	assign LD4 = reset;
-	
-	assign LD3 = (state == `QI);
-	assign LD5 = (state == `QGAME_1);	
-	assign LD6 = (state == `QGAME_2);
-	assign LD7 = (state == `QDONE);
-	
-	/////////////////////////////////////////////////////////////////
-	//////////////  	  LD control ends here 	 	////////////////////
-	/////////////////////////////////////////////////////////////////
-	
-	/////////////////////////////////////////////////////////////////
-	//////////////  	  SSD control starts here 	 ///////////////////
-	/////////////////////////////////////////////////////////////////
-	reg 	[3:0]	SSD;
-	wire 	[3:0]	SSD0, SSD1, SSD2, SSD3;
-	wire 	[1:0] ssdscan_clk;
-	
-	assign SSD3 = 4'b1111;
-	assign SSD2 = 4'b1111;
-	assign SSD1 = 4'b1111;
-	assign SSD0 = positionY[3:0];
-	
-	// need a scan clk for the seven segment display 
-	// 191Hz (50MHz / 2^18) works well
-	assign ssdscan_clk = DIV_CLK[19:18];	
-	assign An0	= !(~(ssdscan_clk[1]) && ~(ssdscan_clk[0]));  // when ssdscan_clk = 00
-	assign An1	= !(~(ssdscan_clk[1]) &&  (ssdscan_clk[0]));  // when ssdscan_clk = 01
-	assign An2	= !( (ssdscan_clk[1]) && ~(ssdscan_clk[0]));  // when ssdscan_clk = 10
-	assign An3	= !( (ssdscan_clk[1]) &&  (ssdscan_clk[0]));  // when ssdscan_clk = 11
-	
-	always @ (ssdscan_clk, SSD0, SSD1, SSD2, SSD3)
-	begin : SSD_SCAN_OUT
-		case (ssdscan_clk) 
-			2'b00:
-					SSD = SSD0;
-			2'b01:
-					SSD = SSD1;
-			2'b10:
-					SSD = SSD2;
-			2'b11:
-					SSD = SSD3;
-		endcase 
-	end	
-
-	// and finally convert SSD_num to ssd
-	reg [6:0]  SSD_CATHODES;
-	assign {Ca, Cb, Cc, Cd, Ce, Cf, Cg, Dp} = {SSD_CATHODES, 1'b1};
-	// Following is Hex-to-SSD conversion
-	always @ (SSD) 
-	begin : HEX_TO_SSD
-		case (SSD)		
-			4'b1111: SSD_CATHODES = 7'b1111111 ; //Nothing 
-			4'b0000: SSD_CATHODES = 7'b0000001 ; //0
-			4'b0001: SSD_CATHODES = 7'b1001111 ; //1
-			4'b0010: SSD_CATHODES = 7'b0010010 ; //2
-			4'b0011: SSD_CATHODES = 7'b0000110 ; //3
-			4'b0100: SSD_CATHODES = 7'b1001100 ; //4
-			4'b0101: SSD_CATHODES = 7'b0100100 ; //5
-			4'b0110: SSD_CATHODES = 7'b0100000 ; //6
-			4'b0111: SSD_CATHODES = 7'b0001111 ; //7
-			4'b1000: SSD_CATHODES = 7'b0000000 ; //8
-			4'b1001: SSD_CATHODES = 7'b0000100 ; //9
-			4'b1010: SSD_CATHODES = 7'b0001000 ; //10 or A
-			default: SSD_CATHODES = 7'bXXXXXXX ; // default is not needed as we covered all cases
-		endcase
-	end
-	
-	/////////////////////////////////////////////////////////////////
-	//////////////  	  SSD control ends here 	 ///////////////////
-	/////////////////////////////////////////////////////////////////
 endmodule
