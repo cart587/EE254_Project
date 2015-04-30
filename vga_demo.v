@@ -24,10 +24,14 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 	BUF BUF2 (reset, btnC);
 	
 	reg [27:0]	DIV_CLK;
+	reg flag;
 	always @ (posedge board_clk, posedge reset)  
 	begin : CLOCK_DIVIDER
       if (reset)
+			begin
 			DIV_CLK <= 0;
+			flag <= 0;
+			end
       else
 			DIV_CLK <= DIV_CLK + 1'b1;
 	end	
@@ -121,6 +125,7 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 	reg [7:0] bombDelay;
 	reg [4:0] explodeTimer;
 	reg explode;
+	reg p1_dead;
 	
 	wire maze_block_0 = (positionX > 55 && positionX < 165) && (positionY > 38 && positionY < 130);
 	wire maze_block_1 = (positionX > 195 && positionX < 305) && (positionY > 38 && positionY < 130);
@@ -159,6 +164,7 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 	reg [7:0] p2_bombDelay;
 	reg [4:0] p2_explodeTimer;
 	reg p2_explode;
+	reg p2_dead;
 	
 	wire p2_maze_block_0 = (p2_positionX > 55 && p2_positionX < 165) && (p2_positionY > 38 && p2_positionY < 130);
 	wire p2_maze_block_1 = (p2_positionX > 195 && p2_positionX < 305) && (p2_positionY > 38 && p2_positionY < 130);
@@ -180,7 +186,7 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////PLAYER 2 SETTINGS///////////////////////////////////	
 ///////////////////////////////////////////////////////////////////////////////////	
-	always @ (posedge DIV_CLK[21])
+	always @ (posedge DIV_CLK[21], posedge reset)
 		begin
 			if (reset)
 				begin
@@ -196,57 +202,64 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 					p2_bombDelay <= 96; //4 seconds
 					p2_explodeTimer <= 24;
 					p2_explode <= 0;
-				end
-			else if (p2_joystickY > 700 && ~(p2_joystickX < 300) && ~(p2_joystickX > 700))
-				begin
-					p2_velocityY <= -3;
-					p2_direction <= 0;
-				end
-			else if (p2_joystickY < 300 && ~(p2_joystickX < 300) && ~(p2_joystickX > 700))
-				begin
-					p2_velocityY <= 3;
-					p2_direction <= 1;
-				end
-			else if (p2_joystickX < 300 && ~(p2_joystickY < 300) && ~(p2_joystickY > 700))
-				begin
-					p2_velocityX <= -3;
-					p2_direction <= 2;
-				end
-			else if (p2_joystickX > 700 && ~(p2_joystickY < 300) && ~(p2_joystickY > 700))
-				begin
-					p2_velocityX <= 3;
-					p2_direction <= 3;
+					p2_dead <= 0;
 				end
 			else
 				begin
-					p2_velocityX <= 0;
-					p2_velocityY <= 0;
+					if (p2_joystickY > 700 && ~(p2_joystickX < 300) && ~(p2_joystickX > 700))
+					begin
+						p2_velocityY <= -3;
+						p2_direction <= 0;
+					end
+					else if (p2_joystickY < 300 && ~(p2_joystickX < 300) && ~(p2_joystickX > 700))
+						begin
+							p2_velocityY <= 3;
+							p2_direction <= 1;
+						end
+					else if (p2_joystickX < 300 && ~(p2_joystickY < 300) && ~(p2_joystickY > 700))
+						begin
+							p2_velocityX <= -3;
+							p2_direction <= 2;
+						end
+					else if (p2_joystickX > 700 && ~(p2_joystickY < 300) && ~(p2_joystickY > 700))
+						begin
+							p2_velocityX <= 3;
+							p2_direction <= 3;
+						end
+					else
+						begin
+							p2_velocityX <= 0;
+							p2_velocityY <= 0;
+						end
+					if(p2_joystickBombButton && p2_bombCount == 0 && p2_bombTimer == 0 && p2_explode == 0 && ~p2_dead)
+						begin
+							p2_bombCount <= p2_bombCount + 1;
+							p2_bombTimer <= p2_bombDelay;
+							p2_bombY <= p2_positionY;
+							p2_bombX <= p2_positionX;
+						end
+					if(!(p2_bombTimer == 0))
+						p2_bombTimer<= p2_bombTimer - 1;
+					else if((p2_bombTimer == 0) && !(p2_bombCount == 0))
+					begin
+						p2_bombCount<= p2_bombCount - 1;
+						p2_explode <= 1;
+					end			
+					if(p2_explode)
+						p2_explodeTimer <=  p2_explodeTimer - 1;
+						
+					if(p2_explodeTimer == 0)
+					begin
+						p2_explode <= 0;
+						p2_explodeTimer <= 24;
+					end
+					
+					if(P2KILLED)
+							p2_dead <= 1;
 				end
-			if(p2_joystickBombButton && p2_bombCount == 0 && p2_bombTimer == 0 && p2_explode == 0)
-				begin
-					p2_bombCount <= p2_bombCount + 1;
-					p2_bombTimer <= p2_bombDelay;
-					p2_bombY <= p2_positionY;
-					p2_bombX <= p2_positionX;
-				end
-			if(!(p2_bombTimer == 0))
-				p2_bombTimer<= p2_bombTimer - 1;
-			else if((p2_bombTimer == 0) && !(p2_bombCount == 0))
-			begin
-				p2_bombCount<= p2_bombCount - 1;
-				p2_explode <= 1;
-			end			
-			if(p2_explode)
-				p2_explodeTimer <=  p2_explodeTimer - 1;
-				
-			if(p2_explodeTimer == 0)
-			begin
-				p2_explode <= 0;
-				p2_explodeTimer <= 24;
-			end
 		end
 		
-		always @ (posedge DIV_CLK[21])	
+		always @ (posedge DIV_CLK[21], posedge reset)	
 		begin
 			if(reset)
 				begin
@@ -315,7 +328,7 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////PLAYER 1 SETTINGS///////////////////////////////////	
 ///////////////////////////////////////////////////////////////////////////////////
-		always @ (posedge DIV_CLK[21])
+		always @ (posedge DIV_CLK[21], posedge reset)
 		begin
 			if (reset)
 				begin			
@@ -331,62 +344,69 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 					bombDelay <= 96; //4 seconds
 					explodeTimer <= 24;
 					explode <= 0;
-				end
-			else if (joystickY > 700 && ~(joystickX < 300) && ~(joystickX > 700))
-				begin
-					velocityY <= -3;
-					direction <= 0;
-				end
-			else if (joystickY < 300 && ~(joystickX < 300) && ~(joystickX > 700))
-				begin
-					velocityY <= 3;
-					direction <= 1;
-				end
-			else if (joystickX < 300 && ~(joystickY < 300) && ~(joystickY > 700))
-				begin
-					velocityX <= -3;
-					direction <= 2;
-				end
-			else if (joystickX > 700 && ~(joystickY < 300) && ~(joystickY > 700))
-				begin
-					velocityX <= 3;
-					direction <= 3;
+					p1_dead <=0;
 				end
 			else
 				begin
-					velocityX <= 0;
-					velocityY <= 0;
-				end
-			if(joystickBombButton && bombCount == 0 && bombTimer == 0 && explode == 0)
+					if (joystickY > 700 && ~(joystickX < 300) && ~(joystickX > 700))
+					begin
+						velocityY <= -3;
+						direction <= 0;
+					end
+				else if (joystickY < 300 && ~(joystickX < 300) && ~(joystickX > 700))
+					begin
+						velocityY <= 3;
+						direction <= 1;
+					end
+				else if (joystickX < 300 && ~(joystickY < 300) && ~(joystickY > 700))
+					begin
+						velocityX <= -3;
+						direction <= 2;
+					end
+				else if (joystickX > 700 && ~(joystickY < 300) && ~(joystickY > 700))
+					begin
+						velocityX <= 3;
+						direction <= 3;
+					end
+				else
+					begin
+						velocityX <= 0;
+						velocityY <= 0;
+					end
+				if(joystickBombButton && bombCount == 0 && bombTimer == 0 && explode == 0 && ~p1_dead)
+					begin
+						bombCount <= bombCount + 1;
+						bombTimer <= bombDelay;
+						bombY <= positionY;
+						bombX <= positionX;
+					end
+				if(!(bombTimer == 0))
+					bombTimer<= bombTimer - 1;
+				else if((bombTimer == 0) && !(bombCount == 0))
 				begin
-					bombCount <= bombCount + 1;
-					bombTimer <= bombDelay;
-					bombY <= positionY;
-					bombX <= positionX;
+					bombCount<= bombCount - 1;
+					explode <= 1;
+				end			
+				if(explode)
+					explodeTimer <=  explodeTimer - 1;
+					
+				if(explodeTimer == 0)
+				begin
+					explode <= 0;
+					explodeTimer <= 24;
 				end
-			if(!(bombTimer == 0))
-				bombTimer<= bombTimer - 1;
-			else if((bombTimer == 0) && !(bombCount == 0))
-			begin
-				bombCount<= bombCount - 1;
-				explode <= 1;
-			end			
-			if(explode)
-				explodeTimer <=  explodeTimer - 1;
 				
-			if(explodeTimer == 0)
-			begin
-				explode <= 0;
-				explodeTimer <= 24;
+				if(P1KILLED)
+					p1_dead <= 1;
 			end
 		end
-		
-	always @ (posedge DIV_CLK[21])	
+	
+	always @ (posedge DIV_CLK[21], posedge reset)	
 		begin
 			if(reset)
 				begin
-					positionX <= 10;
-					positionY <= 10;
+					positionX <= 15;
+					positionY <= 15;
 				end
 			else
 				begin
@@ -447,8 +467,9 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 				end
 		end
 	
-	
-	//PLAYER 1 BOMB
+	/////////////////////////////////////////////////////////////////
+	////////////////////////PLAYER 2 BOMB////////////////////////////
+	/////////////////////////////////////////////////////////////////
 	wire BOMB_DROP = (((CounterY-bombY)*(CounterY-bombY)) + ((CounterX-bombX)*(CounterX-bombX))) < (bombRad*bombRad) && (bombCount == 1) && bombTimer[3] == 0;
 	wire EXPLOSION0 = (bombY >= 6 && bombY <= 58) && (((CounterY >= 10) && (CounterY <= 54)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
 	wire EXPLOSION1 = (bombY >= 110 && bombY <= 162) && (((CounterY >= 114) && (CounterY <= 158)) && ((CounterX >= 9) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
@@ -461,7 +482,35 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 	wire EXPLOSION8 = (bombX >= 425 && bombX <= 495) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 429) && (CounterX <= 491))) && !(explodeTimer == 0) && explode;
 	wire EXPLOSION9 = (bombX >= 565 && bombX <= 635) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 569) && (CounterX <= 631))) && !(explodeTimer == 0) && explode;
 	
-	//PLAYER 2 BOMB
+	wire p1_killed0 = (bombY >= 6 && bombY <= 58) && (positionY >= 6 && positionY <= 58) && !(explodeTimer == 0) && explode;
+	wire p1_killed1 = (bombY >= 110 && bombY <= 162) && (positionY >= 110 && positionY <= 162) && !(explodeTimer == 0) && explode;
+	wire p1_killed2 = (bombY >= 214 && bombY <= 266) && (positionY >= 214 && positionY <= 266) && !(explodeTimer == 0) && explode;
+	wire p1_killed3 = (bombY >= 318 && bombY <= 370) && (positionY >= 318 && positionY <= 370) && !(explodeTimer == 0) && explode;
+	wire p1_killed4 = (bombY >= 422 && bombY <= 474) && (positionY >= 422 && positionY <= 474) && !(explodeTimer == 0) && explode;
+	wire p1_killed5 = (bombX >= 5 && bombX <= 75) && (positionX >= 5 && positionX <= 75) && !(explodeTimer == 0) && explode;
+	wire p1_killed6 = (bombX >= 145 && bombX <= 215) && (positionX >= 145 && positionX <= 215) && !(explodeTimer == 0) && explode;
+	wire p1_killed7 = (bombX >= 285 && bombX <= 355) && (positionX >= 285 && positionX <= 355) && !(explodeTimer == 0) && explode;
+	wire p1_killed8 = (bombX >= 425 && bombX <= 495) && (positionX >= 425 && positionX <= 495) && !(explodeTimer == 0) && explode;
+	wire p1_killed9 = (bombX >= 565 && bombX <= 635) && (positionX >= 565 && positionX <= 635) && !(explodeTimer == 0) && explode;
+	
+	wire p1_killed0_by_p2 = (p2_bombY >= 6 && p2_bombY <= 58) && (positionY >= 6 && positionY <= 58) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed1_by_p2 = (p2_bombY >= 110 && p2_bombY <= 162) && (positionY >= 110 && positionY <= 162) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed2_by_p2 = (p2_bombY >= 214 && p2_bombY <= 266) && (positionY >= 214 && positionY <= 266) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed3_by_p2 = (p2_bombY >= 318 && p2_bombY <= 370) && (positionY >= 318 && positionY <= 370) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed4_by_p2 = (p2_bombY >= 422 && p2_bombY <= 474) && (positionY >= 422 && positionY <= 474) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed5_by_p2 = (p2_bombX >= 5 && p2_bombX <= 75) && (positionX >= 5 && positionX <= 75) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed6_by_p2 = (p2_bombX >= 145 && p2_bombX <= 215) && (positionX >= 145 && positionX <= 215) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed7_by_p2 = (p2_bombX >= 285 && p2_bombX <= 355) && (positionX >= 285 && positionX <= 355) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed8_by_p2 = (p2_bombX >= 425 && p2_bombX <= 495) && (positionX >= 425 && positionX <= 495) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p1_killed9_by_p2 = (p2_bombX >= 565 && p2_bombX <= 635) && (positionX >= 565 && positionX <= 635) && !(p2_explodeTimer == 0) && p2_explode;
+	wire P1KILLED = p1_killed0 || p1_killed1 || p1_killed2 || p1_killed3 || p1_killed4 || p1_killed5 || p1_killed6 || p1_killed7 || p1_killed8 || p1_killed9 ||
+		p1_killed0_by_p2 || p1_killed1_by_p2 || p1_killed2_by_p2 || p1_killed3_by_p2 || p1_killed4_by_p2 || p1_killed5_by_p2 || p1_killed6_by_p2 ||p1_killed7_by_p2 ||
+		p1_killed8_by_p2 || p1_killed9_by_p2;
+	
+	
+	/////////////////////////////////////////////////////////////////
+	////////////////////////PLAYER 2 BOMB////////////////////////////
+	/////////////////////////////////////////////////////////////////
 	wire p2_BOMB_DROP = (((CounterY-p2_bombY)*(CounterY-p2_bombY)) + ((CounterX-p2_bombX)*(CounterX-p2_bombX))) < (p2_bombRad*p2_bombRad) && (p2_bombCount == 1) && p2_bombTimer[3] == 0;
 	wire p2_EXPLOSION0 = (p2_bombY >= 6 && p2_bombY <= 58) && (((CounterY >= 10) && (CounterY <= 54)) && ((CounterX >= 9) && (CounterX <= 631))) && !(p2_explodeTimer == 0) && p2_explode;
 	wire p2_EXPLOSION1 = (p2_bombY >= 110 && p2_bombY <= 162) && (((CounterY >= 114) && (CounterY <= 158)) && ((CounterX >= 9) && (CounterX <= 631))) && !(p2_explodeTimer == 0) && p2_explode;
@@ -473,6 +522,32 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 	wire p2_EXPLOSION7 = (p2_bombX >= 285 && p2_bombX <= 355) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 289) && (CounterX <= 351))) && !(p2_explodeTimer == 0) && p2_explode;
 	wire p2_EXPLOSION8 = (p2_bombX >= 425 && p2_bombX <= 495) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 429) && (CounterX <= 491))) && !(p2_explodeTimer == 0) && p2_explode;
 	wire p2_EXPLOSION9 = (p2_bombX >= 565 && p2_bombX <= 635) && (((CounterY >= 6) && (CounterY <= 474)) && ((CounterX >= 569) && (CounterX <= 631))) && !(p2_explodeTimer == 0) && p2_explode;
+
+	wire p2_killed0_by_p1 = (bombY >= 6 && bombY <= 58) && (p2_positionY >= 6 && p2_positionY <= 58) && !(explodeTimer == 0) && explode;
+	wire p2_killed1_by_p1 = (bombY >= 110 && bombY <= 162) && (p2_positionY >= 110 && p2_positionY <= 162) && !(explodeTimer == 0) && explode;
+	wire p2_killed2_by_p1 = (bombY >= 214 && bombY <= 266) && (p2_positionY >= 214 && p2_positionY <= 266) && !(explodeTimer == 0) && explode;
+	wire p2_killed3_by_p1 = (bombY >= 318 && bombY <= 370) && (p2_positionY >= 318 && p2_positionY <= 370) && !(explodeTimer == 0) && explode;
+	wire p2_killed4_by_p1 = (bombY >= 422 && bombY <= 474) && (p2_positionY >= 422 && p2_positionY <= 474) && !(explodeTimer == 0) && explode;
+	wire p2_killed5_by_p1 = (bombX >= 5 && bombX <= 75) && (p2_positionX >= 5 && p2_positionX <= 75) && !(explodeTimer == 0) && explode;
+	wire p2_killed6_by_p1 = (bombX >= 145 && bombX <= 215) && (p2_positionX >= 145 && p2_positionX <= 215) && !(explodeTimer == 0) && explode;
+	wire p2_killed7_by_p1 = (bombX >= 285 && bombX <= 355) && (p2_positionX >= 285 && p2_positionX <= 355) && !(explodeTimer == 0) && explode;
+	wire p2_killed8_by_p1 = (bombX >= 425 && bombX <= 495) && (p2_positionX >= 425 && p2_positionX <= 495) && !(explodeTimer == 0) && explode;
+	wire p2_killed9_by_p1 = (bombX >= 565 && bombX <= 635) && (p2_positionX >= 565 && p2_positionX <= 635) && !(explodeTimer == 0) && explode;
+	
+	wire p2_killed0 = (p2_bombY >= 6 && p2_bombY <= 58) && (p2_positionY >= 6 && p2_positionY <= 58) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed1 = (p2_bombY >= 110 && p2_bombY <= 162) && (p2_positionY >= 110 && p2_positionY <= 162) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed2 = (p2_bombY >= 214 && p2_bombY <= 266) && (p2_positionY >= 214 && p2_positionY <= 266) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed3 = (p2_bombY >= 318 && p2_bombY <= 370) && (p2_positionY >= 318 && p2_positionY <= 370) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed4 = (p2_bombY >= 422 && p2_bombY <= 474) && (p2_positionY >= 422 && p2_positionY <= 474) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed5 = (p2_bombX >= 5 && p2_bombX <= 75) && (p2_positionX >= 5 && p2_positionX <= 75) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed6 = (p2_bombX >= 145 && p2_bombX <= 215) && (p2_positionX >= 145 && p2_positionX <= 215) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed7 = (p2_bombX >= 285 && p2_bombX <= 355) && (p2_positionX >= 285 && p2_positionX <= 355) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed8 = (p2_bombX >= 425 && p2_bombX <= 495) && (p2_positionX >= 425 && p2_positionX <= 495) && !(p2_explodeTimer == 0) && p2_explode;
+	wire p2_killed9 = (p2_bombX >= 565 && p2_bombX <= 635) && (p2_positionX >= 565 && p2_positionX <= 635) && !(p2_explodeTimer == 0) && p2_explode;
+	wire P2KILLED = p2_killed0 || p2_killed1 || p2_killed2 || p2_killed3 || p2_killed4 || p2_killed5 || p2_killed6 || p2_killed7 || p2_killed8 || p2_killed9 ||
+		p2_killed0_by_p1 || p2_killed1_by_p1 || p2_killed2_by_p1 || p2_killed3_by_p1 || p2_killed4_by_p1 || p2_killed5_by_p1 || p2_killed6_by_p1 ||p2_killed7_by_p1 ||
+		p1_killed8_by_p2 || p2_killed9_by_p1;
+
 
 	wire MAZE_WALL_X = (CounterX >= 0 && CounterX <= 5) || (CounterX >= 635 && CounterX <= 640);
 	wire MAZE_WALL_Y = (CounterY >= 0 && CounterY <= 6) || (CounterY >= 474 && CounterY <= 480);
@@ -507,24 +582,24 @@ module vga_demo(ClkPort, vga_h_sync, vga_v_sync, vga_r, vga_g, vga_b, btnC,
 	wire MAZE_BLOCK = MAZE_BLOCK_0 || MAZE_BLOCK_1 || MAZE_BLOCK_2 || MAZE_BLOCK_3 || MAZE_BLOCK_4 || MAZE_BLOCK_5 || MAZE_BLOCK_6 || MAZE_BLOCK_7 || 
 		MAZE_BLOCK_8 || MAZE_BLOCK_9 || MAZE_BLOCK_10 || MAZE_BLOCK_11 || MAZE_BLOCK_12 || MAZE_BLOCK_13 || MAZE_BLOCK_14 || MAZE_BLOCK_15;
 	
-	wire PLAYER1 = (CounterY >= (positionY-20) && CounterY <= (positionY+20) && CounterX >= (positionX-20) && CounterX <= (positionX+20));
-	wire PLAYER2 = (CounterY >= (p2_positionY-20) && CounterY <= (p2_positionY+20) && CounterX >= (p2_positionX-20) && CounterX <= (p2_positionX+20));
+	wire PLAYER1 = (CounterY >= (positionY-20) && CounterY <= (positionY+20) && CounterX >= (positionX-20) && CounterX <= (positionX+20)) && ~p1_dead;
+	wire PLAYER2 = (CounterY >= (p2_positionY-20) && CounterY <= (p2_positionY+20) && CounterX >= (p2_positionX-20) && CounterX <= (p2_positionX+20)) && ~p2_dead;
 	
-	wire p1_EXPLOSION = BOMB_DROP || EXPLOSION0 || EXPLOSION1 || EXPLOSION2 || EXPLOSION3 || EXPLOSION4 || EXPLOSION5 || EXPLOSION6 ||
+	wire p1_EXPLOSION = EXPLOSION0 || EXPLOSION1 || EXPLOSION2 || EXPLOSION3 || EXPLOSION4 || EXPLOSION5 || EXPLOSION6 ||
 		EXPLOSION7 || EXPLOSION8 || EXPLOSION9;
-	wire p2_EXPLOSION = p2_BOMB_DROP || p2_EXPLOSION0 || p2_EXPLOSION1 || p2_EXPLOSION2 || p2_EXPLOSION3 || p2_EXPLOSION4 || 
+	wire p2_EXPLOSION = p2_EXPLOSION0 || p2_EXPLOSION1 || p2_EXPLOSION2 || p2_EXPLOSION3 || p2_EXPLOSION4 || 
 		p2_EXPLOSION5 || p2_EXPLOSION6 || p2_EXPLOSION7 || p2_EXPLOSION8 || p2_EXPLOSION9;
 		
 		
-	wire R = PLAYER1 || PLAYER2 || p1_EXPLOSION;
+	wire R = PLAYER1 || PLAYER2 || p1_EXPLOSION || BOMB_DROP;
 	wire G = PLAYER2 || MAZE_WALL || MAZE_BLOCK;
-	wire B = p2_EXPLOSION || p1_EXPLOSION;
+	wire B = p2_BOMB_DROP || p2_EXPLOSION || p1_EXPLOSION || BOMB_DROP;
 	
 	always @(posedge clk)
 	begin
 		vga_r <= R & inDisplayArea;
 		vga_g <= G & inDisplayArea;
-		vga_b <= B & inDisplayArea;
+		vga_b <= B & inDisplayArea;		
 	end
 	
 endmodule
